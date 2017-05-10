@@ -7,13 +7,10 @@ app.set('views', path.join(__dirname, 'templates'));
 
 app.get('/whoami', function (req, res) {
     var forwardedIpsStr = req.header('x-forwarded-for');
-    var userAgent = req.header('user-Agent');
-    var userArr = userAgent.split(/[()]/g)
-    var userLanguage = req.header('accept-language');
-    var languageArr = userLanguage.split(";")
-    var result = {"ipadress": forwardedIpsStr, "language": languageArr[0], "software": userArr[1]}
-  res.render('index', {date: JSON.stringify(result)});
-})
+    var userAgent = req.header('user-Agent').split(/[()]/g)[1];
+    var userLanguage = req.header('accept-language').split(";")[0];
+    var result = {"ipadress": forwardedIpsStr, "language": userLanguage, "software": userAgent}
+  res.render('index', {info: JSON.stringify(result)})})
 
 
 app.listen(8080, function () {
